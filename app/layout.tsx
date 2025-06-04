@@ -1,15 +1,26 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type {Metadata, Viewport} from "next";
+import {Roboto, Tangerine} from "next/font/google";
 import "./globals.css";
+import {ThemeProvider} from "next-themes";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
+const roboto = Roboto({
   subsets: ["latin"],
+  variable: "--font-roboto",
+  display: "swap",
+  weight: "400",
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const tangerine = Tangerine({
   subsets: ["latin"],
+  variable: "--font-tangerine",
+  display: "swap",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -23,11 +34,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="de" suppressHydrationWarning>
+      <body className={`${roboto.variable} ${tangerine.variable} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main>{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );
