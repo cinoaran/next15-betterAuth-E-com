@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, Suspense} from "react";
+import {useState, Suspense, useEffect} from "react";
 import {useSearchParams} from "next/navigation";
 import {FieldValues, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -34,11 +34,21 @@ function ResetPasswordContent() {
 
   const form = useForm<z.infer<typeof ResetPasswordSchema>>({
     resolver: zodResolver(ResetPasswordSchema),
+    mode: "onTouched",
     defaultValues: {
       password: "",
       confirmPassword: "",
     },
   });
+
+  useEffect(() => {
+    const subscription = form.watch((value, {name}) => {
+      if (name === "password") {
+        form.setValue("confirmPassword", "");
+      }
+    });
+    return () => subscription.unsubscribe?.();
+  }, [form]);
 
   const onSubmit = async (data: z.infer<typeof ResetPasswordSchema>) => {
     setIsPending(true);
@@ -50,101 +60,94 @@ function ResetPasswordContent() {
     if (error) {
       setFormError(error.message);
     } else {
-      setSuccess("Password reset successful. Login to continue.");
+      setSuccess("Password reset done. Redirecting to login.");
+      setIsPending(true);
       setTimeout(() => {
         router.push("/login");
-      }, 4000); // Show success for 4 seconds before redirect
+      }, 3000); // Show success for 4 seconds before redirect
     }
     setIsPending(false);
   };
 
-  if (error === "invalid_token") {
+  if (error === "INVALID_TOKEN") {
     return (
       <div className="grow flex items-center justify-center p-4">
-        <h2>Invalid Reset Link</h2>
-
-        <div className="space-y-4">
-          <p className="text-center text-foreground">
-            This password reset link is invalid or has expired.
-          </p>
-        </div>
+        <FormError message="Invalid or expired token. Please try again." />
       </div>
     );
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full px-2 md:px-10"
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col items-center justify-center md:px-10 w-full"
+      >
+        <FormField
+          control={form.control}
+          name="password"
+          render={({field}: {field: FieldValues}) => (
+            <FormItem className="py-3 w-full">
+              <FormLabel
+                className={`font-thin text-[0.6rem] md:text-lg ${
+                  form.formState.errors.password
+                    ? "text-destructive"
+                    : "text-foreground"
+                }`}
+              >
+                New password
+              </FormLabel>
+              <FormControl>
+                <PasswordInput
+                  disabled={isPending}
+                  {...field}
+                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-primary-foreground/30 py-5 text-[0.6rem] md:text-lg"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({field}: {field: FieldValues}) => (
+            <FormItem className="py-3 w-full">
+              <FormLabel
+                className={`font-thin text-[0.6rem] md:text-lg ${
+                  form.formState.errors.confirmPassword
+                    ? "text-destructive"
+                    : "text-foreground"
+                }`}
+              >
+                Confirm new password
+              </FormLabel>
+              <FormControl>
+                <PasswordInput
+                  disabled={isPending}
+                  {...field}
+                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-primary-foreground/30 py-5 text-[0.6rem] md:text-lg"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormError message={error ?? undefined} />
+        <FormSuccess message={success} />
+        <Button
+          type="submit"
+          disabled={isPending || !form.formState.isValid}
+          variant="outline"
+          className="rounded-md w-full text-sm text-primary-foreground md:text-md cursor-pointer py-6 mt-5 animate-in transition-all duration-200 ease-in-out hover:shadow-sm shadow-sm hover:shadow-accent-foreground/50 focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-background uppercase"
         >
-          <FormField
-            control={form.control}
-            name="password"
-            render={({field}: {field: FieldValues}) => (
-              <FormItem className="py-3 text-md">
-                <FormLabel
-                  className={`font-thin ${
-                    form.formState.errors.password
-                      ? "text-accent"
-                      : "text-foreground"
-                  }`}
-                >
-                  New password
-                </FormLabel>
-                <FormControl>
-                  <PasswordInput
-                    disabled={isPending}
-                    {...field}
-                    className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-accent/20 py-6 text-md"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({field}: {field: FieldValues}) => (
-              <FormItem className="py-3 text-md">
-                <FormLabel
-                  className={`font-thin ${
-                    form.formState.errors.confirmPassword
-                      ? "text-accent"
-                      : "text-foreground"
-                  }`}
-                >
-                  Confirm new password
-                </FormLabel>
-                <FormControl>
-                  <PasswordInput
-                    disabled={isPending}
-                    {...field}
-                    className="border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-accent/20 py-6 text-md"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormError message={error ?? undefined} />
-          <FormSuccess message={success} />
-          <Button
-            type="submit"
-            disabled={isPending || !form.formState.isValid}
-            variant={"outline"}
-            className="rounded-md w-full cursor-pointer py-6 mt-5 animate-in transition-all duration-200 ease-in-out hover:shadow-sm shadow-sm hover:shadow-link-foreground/50 focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-background uppercase"
-          >
-            {isPending || !form.formState.isValid
-              ? "Please fill out all fields"
-              : "Change your password"}
-            {form.formState.isSubmitting && <Spinner />}
-          </Button>
-        </form>
-      </Form>
-    </>
+          {isPending || !form.formState.isValid
+            ? "Waiting..."
+            : "Reset password"}
+          {form.formState.isSubmitting && <Spinner />}
+        </Button>
+      </form>
+    </Form>
   );
 }
 

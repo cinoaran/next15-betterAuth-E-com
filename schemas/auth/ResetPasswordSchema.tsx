@@ -2,7 +2,7 @@ import {z} from "zod";
 
 export const ResetPasswordSchema = z
   .object({
-    password: z.string().min(6, {message: "Password must have 6 characters"}),
+    password: z.string().min(8, {message: "Password must have 8 characters"}),
     confirmPassword: z.string(),
   })
   .refine(

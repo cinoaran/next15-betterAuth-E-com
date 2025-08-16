@@ -1,69 +1,81 @@
 import {APP_NAME_FIRST, APP_NAME_SECOND} from "@/lib/constants";
+import {MailCheck, MapPin, Phone} from "lucide-react";
 import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="text-foreground border-t-[0.3px] border-foreground/10">
-      <div className="grid-1 grid gap-4 md:grid-cols-2 lg:grid-cols-3 py-10 md:place-items-center grid-wrap">
-        <div className="flex flex-col items-center justify-start md:items-start gap-2 md:min-w-[250px] border-b-[0.3px] border-gray-300  hover:border-accent pb-10">
+    <footer className="mx-auto text-foreground border-t-[0.3px] border-foreground/10">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 py-10 place-items-center grid-wrap px-10">
+        <div className="flex flex-col items-center justify-center md:items-start gap-2 md:min-w-[250px] border-b-[0.3px] border-primary  hover:border-primary/20 pb-8">
           <h6 className="mb-4 font-semibold uppercase">Products</h6>
-          <p>
+          <p className="underlined">
             <Link href="#!">Angular</Link>
           </p>
-          <p>
+          <p className="underlined">
             <Link href="#!">React</Link>
           </p>
-          <p>
+          <p className="underlined">
             <Link href="#!">Vue</Link>
           </p>
-          <p>
+          <p className="underlined">
             <Link href="#!">Laravel</Link>
           </p>
         </div>
-        <div className="flex flex-col items-center justify-center md:items-start gap-2 md:min-w-[250px] border-b-[0.3px] border-gray-300  hover:border-accent pb-10">
-          <h6 className="mb-4 font-semibold uppercase">Useful links</h6>
-          <p>
+        <div className="flex flex-col items-center justify-center md:items-start gap-2 md:min-w-[250px] border-b-[0.3px] border-primary  hover:border-primary/20 pb-8">
+          <h5 className="mb-4 text-center font-semibold uppercase">
+            Useful links
+          </h5>
+          <p className="underlined">
             <Link href="#!">Pricing</Link>
           </p>
-          <p>
+          <p className="underlined">
             <Link href="#!">Settings</Link>
           </p>
-          <p>
+          <p className="underlined">
             <Link href="#!">Orders</Link>
           </p>
-          <p>
+          <p className="underlined">
             <Link href="#!">Help</Link>
           </p>
         </div>
-        <div className="flex flex-col items-center justify-center md:items-start gap-5 md:min-w-[250px] border-b-[0.3px] border-gray-300 hover:border-accent pb-10">
-          <h6 className="flex items-center font-semibold uppercase">
-            <span className="ml-2 text-foreground text-md text-semibold">
-              {APP_NAME_FIRST}
-            </span>
-            <span className="ml-2 text-primary text-3xl text-semibold">
-              {APP_NAME_SECOND}
-            </span>
-          </h6>
-          <p className="w-[max-content] foreground">
-            Address: New York, NY 10012, US
+        <div className="flex flex-col items-center justify-center md:items-start gap-5 md:min-w-[140px] border-b-[0.3px] border-primary hover:border-primary/20 pb-8">
+          <h6 className="mb-4 font-semibold uppercase">Contact</h6>
+          <p className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 flex-wrap">
+            <MapPin size={20} />
+            <span className="text-center">New York, NY 10012</span>
           </p>
-          <p className="w-[max-content] foreground">Email: info@example.com</p>
-          <p className="w-[max-content] foreground">Phone: + 01 234 567 88</p>
-          <p className="w-[max-content] foreground">Fax: + 01 234 567 89</p>
+          <p className="flex flex-col sm:flex-row items-center justify-start gap-4 flex-wrap">
+            <span>
+              <MailCheck size={20} />
+            </span>
+            <span>info@example.com</span>
+          </p>
+
+          <p className="flex flex-col sm:flex-row items-center justify-start gap-4 flex-wrap">
+            <span>
+              <Phone size={20} />
+            </span>
+            <span>+ 01 234 567 88</span>
+          </p>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row items-center justify-center flex-wrap gap-2 mb-12">
-        <h6 className="flex items-center font-semibold uppercase">
-          <span className="ml-2 mb-0 text-foreground text-md text-semibold">
-            © {new Date().getFullYear()} Copyright{" "}
-          </span>
-          <span className="ml-2 text-foreground text-md text-semibold">
-            {APP_NAME_FIRST}
-          </span>
-          <span className="ml-2 text-primary text-3xl text-semibold">
+      <div className="flex flex-col sm:flex-row items-center justify-center sm:gap-2 flex-wrap font-semibold uppercase space-y-5 md:space-y-0">
+        <Link
+          href="/"
+          className="flex flex-col items-center md:flex-row md:items-end justify-center gap-2 "
+          aria-label="Logo"
+        >
+          <h1 className="flex items-center justify-center flex-wrap text-primary font-semibold uppercase">
+            <span className="text-foreground text-semibold">
+              {APP_NAME_FIRST}
+            </span>
+
             {APP_NAME_SECOND}
-          </span>
-        </h6>
+          </h1>
+        </Link>
+        <span className="h-10 text-center">
+          © {new Date().getFullYear()} Copyright
+        </span>
       </div>
     </footer>
   );

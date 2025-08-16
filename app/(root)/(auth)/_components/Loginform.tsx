@@ -1,7 +1,6 @@
 "use client";
 import {FieldValues, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-
 import {
   Form,
   FormControl,
@@ -58,8 +57,12 @@ const Loginform = () => {
           setIsPending(true);
         },
         onSuccess: () => {
-          router.push("/dashboard");
-          router.refresh();
+          setSuccess("Login successful, redirecting...");
+          setTimeout(() => {
+            setSuccess(""); // Hide the message after 3 seconds
+            router.push("/");
+            router.refresh();
+          }, 3000);
         },
         onError: (ctx: ErrorContext) => {
           setError(ctx.error.message ?? "Something went wrong.");
@@ -73,15 +76,15 @@ const Loginform = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full px-2 md:px-10"
+        className="flex flex-col items-center justify-center md:px-10 w-full"
       >
         <FormField
           control={form.control}
           name="email"
           render={({field}: {field: FieldValues}) => (
-            <FormItem className="py-3 text-md w-full">
+            <FormItem className="py-3 w-full">
               <FormLabel
-                className={`font-thin ${
+                className={`font-thin text-[0.6rem] md:text-lg ${
                   form.formState.errors.email
                     ? "text-destructive"
                     : "text-foreground"
@@ -95,7 +98,7 @@ const Loginform = () => {
                   type="email"
                   placeholder="max@muster.de"
                   {...field}
-                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-accent/20 py-6 text-md"
+                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-primary-foreground/30 py-5 text-[0.6rem] md:text-lg"
                 />
               </FormControl>
               <FormMessage />
@@ -106,11 +109,11 @@ const Loginform = () => {
           control={form.control}
           name="password"
           render={({field}: {field: FieldValues}) => (
-            <FormItem className="py-3 text-md w-full">
+            <FormItem className="py-3 w-full">
               <FormLabel
-                className={`font-bold ${
+                className={`font-thin text-[0.6rem] md:text-lg ${
                   form.formState.errors.password
-                    ? "text-desctructive"
+                    ? "text-destructive"
                     : "text-foreground"
                 }`}
               >
@@ -120,7 +123,7 @@ const Loginform = () => {
                 <PasswordInput
                   disabled={isPending}
                   {...field}
-                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-accent/20 py-6 text-md"
+                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-primary-foreground/30 py-5 text-[0.6rem] md:text-lg"
                 />
               </FormControl>
               <FormMessage />
@@ -133,12 +136,10 @@ const Loginform = () => {
         <Button
           type="submit"
           disabled={isPending || !form.formState.isValid}
-          variant={"outline"}
-          className="rounded-md w-full cursor-pointer py-6 mt-5 animate-in transition-all duration-200 ease-in-out hover:shadow-sm shadow-sm hover:shadow-link-foreground/50 focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-background uppercase"
+          variant={"default"}
+          className="rounded-md w-full bg-primary text-primary-foreground text-sm md:text-md cursor-pointer py-6 mt-5 animate-in transition-all duration-200 ease-in-out hover:shadow-sm shadow-sm hover:shadow-accent-foreground/50 focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-background uppercase"
         >
-          {isPending || !form.formState.isValid
-            ? "Please fill out all fields"
-            : "Login to your account"}
+          {isPending || !form.formState.isValid ? "Waiting..." : "Login now"}
           {form.formState.isSubmitting && <Spinner />}
         </Button>
       </form>

@@ -6,7 +6,6 @@ import {authClient} from "@/lib/auth-client";
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
 import Spinner from "../Loader/Spinner";
-import {LogOutIcon} from "lucide-react";
 
 export default function SignoutButton() {
   const router = useRouter();
@@ -33,16 +32,21 @@ export default function SignoutButton() {
   return (
     <Button
       type="submit"
-      color="link"
-      className="bg-transparent text-foreground hover:text-link text-md uppercase h-10 underlined"
+      className="flex items-center justify-center gap-2 hover:text-sheet-foreground/70 uppercase cursor-pointer transition-colors duration-200 ease-in-out w-full px-9"
       disabled={isPending}
       onClick={handleSignOut}
-      variant="link"
+      variant="default"
       aria-label="Logout"
       role="button"
     >
-      {isPending ? <Spinner /> : "Logout"}
-      <LogOutIcon size={16} className="ml-1" />
+      {isPending ? (
+        <>
+          <Spinner label="Please wait..." />
+          <span className="sr-only">Please wait...</span>
+        </>
+      ) : (
+        "Logout"
+      )}
     </Button>
   );
 }

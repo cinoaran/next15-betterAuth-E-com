@@ -44,6 +44,8 @@ export const PasswordReset = async ({
     return info;
   } catch (error) {
     console.error("Error sending email: ", error);
-    throw error;
+    return {
+      error: "Failed to send email",
+    };
   }
 };

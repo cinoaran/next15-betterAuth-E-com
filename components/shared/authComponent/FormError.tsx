@@ -9,12 +9,14 @@ const FormError = ({message}: FormErrorProps) => {
   if (!message) return null; // Return null if the message prop is empty
 
   return (
-    <div
-      className={`flex items-center bg-destructive textdestructive-foreground text-center p-3 uppercase font-bold mb-3 rounded gap-x-5 text-sm `}
+    <p
+      className={`flex items-start bg-destructive w-full rounded-md text-white text-center p-1 mb-5`}
     >
-      <CircleAlertIcon width={20} height={20} />
-      <p>{message}</p>
-    </div>
+      <span className="flex items-center justify-center gap-2">
+        <CircleAlertIcon size={12} />
+        {message}
+      </span>
+    </p>
   );
 };
 

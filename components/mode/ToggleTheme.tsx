@@ -15,23 +15,39 @@ export function ModeToggle() {
 
   if (!mounted) {
     // Render nothing or a placeholder during SSR
-    return null;
+    return (
+      <div className="flex flex-col items-center justify-center cursor-pointer">
+        <hr className="bg-foreground mb-0 rotate-90" />
+        <span className="flex items-center justify-center h-8 w-8 mt-2 text-foreground font-bold ring-1 ring-foreground bg-primary rounded-full p-2">
+          <Lightbulb
+            size={24}
+            className="rotate-180 text-[1.8rem] hover:scale-95 hover:text-primary transition-colors duration-200 ease-in-out"
+          />
+        </span>
+      </div>
+    );
   }
 
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex flex-col items-center justify-center cursor-pointer">
       {theme === "dark" ? (
-        <div onClick={() => setTheme("light")}>
-          <span className="flex flex-col items-center justify-center cursor-pointer hover:text-link text-[0.8rem] text-link font-bold">
-            <hr className="w-5 border-link rotate-90" />
-            <Lightbulb size={24} className="rotate-180 mt-2 hover:scale-95" />
+        <div
+          onClick={() => setTheme("light")}
+          className="flex flex-col items-center justify-center"
+        >
+          <hr className="w-12 h-[2px] bg-foreground mb-1 rotate-90" />
+          <span className="flex items-center justify-center h-12 w-12 mt-2 text-foreground font-bold ring-2 ring-foreground shadow-2xl bg-primary rounded-full p-2">
+            <Lightbulb className="rotate-180 text-lg hover:scale-95" />
           </span>
         </div>
       ) : (
-        <div onClick={() => setTheme("dark")}>
-          <span className="flex flex-col items-center justify-center cursor-pointer hover:text-link text-[0.8rem] text-link font-bold">
-            <hr className="w-5 border-link rotate-90" />
-            <Lightbulb size={24} className="rotate-180 mt-2 hover:scale-95" />
+        <div
+          onClick={() => setTheme("dark")}
+          className="flex flex-col items-center justify-center"
+        >
+          <hr className="w-12 h-[2px] bg-primary mb-1 rotate-90" />
+          <span className="flex items-center justify-center h-12 w-12 mt-2 icon p-1">
+            <Lightbulb className="rotate-180 text-lg hover:scale-95" />
           </span>
         </div>
       )}

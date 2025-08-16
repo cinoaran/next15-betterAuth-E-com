@@ -41,6 +41,7 @@ const Registerform = () => {
     const subscription = form.watch((value, {name}) => {
       if (name === "password") {
         form.setValue("confirmPassword", "");
+        form.trigger("confirmPassword");
       }
     });
     return () => subscription.unsubscribe?.();
@@ -60,9 +61,7 @@ const Registerform = () => {
           setIsPending(true);
         },
         onSuccess: () => {
-          setSuccess(
-            "Your account has been created. Check your email for a verification link."
-          );
+          setSuccess("Check out your email for your verification link.");
           form.reset();
         },
         onError: (ctx) => {
@@ -77,17 +76,17 @@ const Registerform = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full px-2 md:px-10"
+        className="flex flex-col items-center justify-center md:px-10 w-full"
       >
         <FormField
           control={form.control}
           name="name"
           render={({field}: {field: FieldValues}) => (
-            <FormItem className="py-3 text-md">
+            <FormItem className="py-3 w-full">
               <FormLabel
-                className={`font-thin ${
-                  form.formState.errors.email
-                    ? "text-accent"
+                className={`font-thin text-[0.6rem] md:text-lg ${
+                  form.formState.errors.name
+                    ? "text-destructive"
                     : "text-foreground"
                 }`}
               >
@@ -99,7 +98,7 @@ const Registerform = () => {
                   type="text"
                   placeholder="Max Muster"
                   {...field}
-                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-accent/20 py-6 text-md"
+                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-primary-foreground/30 py-5 text-[0.6rem] md:text-lg"
                 />
               </FormControl>
               <FormMessage />
@@ -110,11 +109,11 @@ const Registerform = () => {
           control={form.control}
           name="email"
           render={({field}: {field: FieldValues}) => (
-            <FormItem className="py-3 text-md">
+            <FormItem className="py-3 w-full">
               <FormLabel
-                className={`font-thin ${
+                className={`font-thin text-[0.6rem] md:text-lg ${
                   form.formState.errors.email
-                    ? "text-accent"
+                    ? "text-destructive"
                     : "text-foreground"
                 }`}
               >
@@ -126,7 +125,7 @@ const Registerform = () => {
                   type="email"
                   placeholder="max@muster.de"
                   {...field}
-                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-accent/20 py-6 text-md"
+                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-primary-foreground/30 py-5 text-[0.6rem] md:text-lg"
                 />
               </FormControl>
               <FormMessage />
@@ -137,11 +136,11 @@ const Registerform = () => {
           control={form.control}
           name="password"
           render={({field}: {field: FieldValues}) => (
-            <FormItem className="py-3 text-md">
+            <FormItem className="py-3 w-full">
               <FormLabel
-                className={`font-thin ${
+                className={`font-thin text-[0.6rem] md:text-lg ${
                   form.formState.errors.password
-                    ? "text-accent"
+                    ? "text-destructive"
                     : "text-foreground"
                 }`}
               >
@@ -151,7 +150,7 @@ const Registerform = () => {
                 <PasswordInput
                   disabled={isPending}
                   {...field}
-                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-accent/20 py-6 text-md"
+                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-primary-foreground/30 py-5 text-[0.6rem] md:text-lg"
                 />
               </FormControl>
               <FormMessage />
@@ -162,11 +161,11 @@ const Registerform = () => {
           control={form.control}
           name="confirmPassword"
           render={({field}: {field: FieldValues}) => (
-            <FormItem className="py-3 text-md">
+            <FormItem className="py-3 w-full">
               <FormLabel
-                className={`font-thin ${
+                className={`font-thin text-[0.6rem] md:text-lg ${
                   form.formState.errors.confirmPassword
-                    ? "text-accent"
+                    ? "text-destructive"
                     : "text-foreground"
                 }`}
               >
@@ -176,7 +175,7 @@ const Registerform = () => {
                 <PasswordInput
                   disabled={isPending}
                   {...field}
-                  className="border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-accent/20 py-6 text-md"
+                  className="w-full border-b-[0.3px] rounded-none outline-none focus-visible:ring-transparent focus-visible:border-b-[0.3px] border-secondary/20 py-6 text-[0.6rem] md:text-lg"
                 />
               </FormControl>
               <FormMessage />
@@ -189,11 +188,9 @@ const Registerform = () => {
           type="submit"
           disabled={isPending || !form.formState.isValid}
           variant={"outline"}
-          className="rounded-md w-full cursor-pointer py-6 mt-5 animate-in transition-all duration-200 ease-in-out hover:shadow-sm shadow-sm hover:shadow-link-foreground/50 focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-background uppercase"
+          className="rounded-md w-full bg-primary text-primary-foreground text-sm md:text-md cursor-pointer py-6 mt-5 animate-in transition-all duration-200 ease-in-out hover:shadow-sm shadow-sm hover:shadow-accent-foreground/50 focus-visible:ring-2 focus-visible:ring-link focus-visible:ring-offset-2 focus-visible:ring-offset-background uppercase"
         >
-          {isPending || !form.formState.isValid
-            ? "Please fill out all fields"
-            : "Register your account"}
+          {isPending || !form.formState.isValid ? "Waiting..." : "Register now"}
           {form.formState.isSubmitting && <Spinner />}
         </Button>
       </form>

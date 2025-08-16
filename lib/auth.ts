@@ -2,15 +2,15 @@ import {betterAuth, BetterAuthOptions} from "better-auth";
 import {prismaAdapter} from "better-auth/adapters/prisma";
 import {prisma} from "./prisma";
 
-import {openAPI} from "better-auth/plugins";
-import {verifyEmail} from "@/actions/emails/verify";
+import {admin, openAPI, twoFactor} from "better-auth/plugins";
+import {verifyEmail} from "@/actions/emails/email-verify";
 import {PasswordReset} from "@/actions/emails/password-reset";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-  plugins: [openAPI()], // api/auth/reference
+  plugins: [openAPI(), admin()], // api/auth/reference
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     // BUG: Prob a bug with updateAge method. It throws an error - Argument `where` of type SessionWhereUniqueInput needs at least one of `id` arguments.
@@ -19,19 +19,19 @@ export const auth = betterAuth({
   },
   user: {
     additionalFields: {
-      role: {type: "string", required: true},
+      role: {type: "string", required: true, defaultValue: "user"},
     },
   },
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: false,
+    requireEmailVerification: true,
     /* Set it back to true for Resend or other better paossibilities rather than Nademailer */
     /* requireEmailVerification: true, */
     sendResetPassword: async ({user, url}) => {
       const sendResetPasswordUrl = url;
       await PasswordReset({
         username: user.name,
-        from: "not-reply",
+        from: "no-reply@cityapartsberlin.de",
         to: user.email,
         subject: "Reset your password",
         verificationUrl: sendResetPasswordUrl,
@@ -40,7 +40,7 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendOnSignUp: true,
-    autoSignInAfterVerification: false,
+    autoSignInAfterVerification: true,
     /* Set it back to true for Resend or other better paossibilities rather than Nademailer */
     /* autoSignInAfterVerification: true, */
     sendVerificationEmail: async ({user, token}) => {

@@ -17,15 +17,15 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
             showPassword ? (
               <EyeIcon
                 aria-label="Show password"
-                size={20}
-                className="text-foreground select-none cursor-pointer"
+                size={14}
+                className="text-secondary-foreground select-none cursor-pointer hover:text-foreground/20"
                 onClick={() => setShowPassword(false)}
               />
             ) : (
               <EyeOffIcon
                 aria-label="Close password"
-                size={20}
-                className="text-foreground select-none cursor-pointer text-md"
+                size={14}
+                className="text-secondary-foreground select-none cursor-pointer hover:text-foreground/20"
                 onClick={() => setShowPassword(true)}
               />
             )
