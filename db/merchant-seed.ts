@@ -1,4 +1,4 @@
-import {PrismaClient} from "@prisma/client";
+import {PrismaClient} from "@/lib/generated/prisma";
 import * as fs from "fs";
 import * as path from "path";
 import {fileURLToPath} from "url";
@@ -6,18 +6,17 @@ import {dirname} from "path";
 
 const prisma = new PrismaClient();
 
-await prisma.merchant.deleteMany();
-await prisma.partner.deleteMany();
-
 async function main() {
+  await prisma.merchant.deleteMany();
+  await prisma.partner.deleteMany();
   try {
     const merchant = await prisma.merchant.create({
       data: {
         name: "Magneficent Coperation",
         address: "123 Main St, Anytown, USA",
-        web: "https://www.johndoe.com",
+        web: "https://www.magnificent.com",
         phone: "555-123-4567",
-        email: "johndoe@example.com",
+        email: "magnificent@example.com",
         partner: {
           create: [
             {

@@ -1,9 +1,15 @@
+import {getLatestProducts} from "@/actions/products";
 import ProductCarousel from "@/components/shared/products/Carousel";
+import Products, {
+  ProductWithVariants,
+} from "@/components/shared/products/products";
 import {APP_NAME_FIRST} from "@/lib/constants";
-import {formatPriceEUR} from "@/lib/formater/formatPrice";
+
 import React from "react";
 
-const HomePage = () => {
+const HomePage = async () => {
+  const products = await getLatestProducts();
+
   return (
     <div className="flex flex-col items-center justify-center ">
       <div className="w-full relative">
@@ -12,9 +18,9 @@ const HomePage = () => {
         </h1>
         <ProductCarousel />
       </div>
-      {/* <div>
-        <p>{formatPriceEUR(299.99)}</p>
-      </div> */}
+      <div>
+        <Products data={products as ProductWithVariants[]} title="new" />
+      </div>
     </div>
   );
 };

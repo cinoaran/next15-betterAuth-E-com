@@ -7,6 +7,7 @@ interface Product {
   brand: string;
   category: string;
   subcategory: string;
+  categoryId?: string;
   rating: number;
   numReviews: number;
   slug: string;
@@ -44,10 +45,11 @@ const sampleProducts: Product[] = [
     brand: "New Balance",
     category: "Sportshuhe Skateboard Cupsole",
     subcategory: "Men Women",
+    categoryId: "cm8msrowk0000i0dkfdo2t4ab",
     rating: 4.5,
     numReviews: 10,
     slug: "new-balence-u-440-v2-skateboardschuhe",
-    merchantId: "cm8msrowk0000i0dkfdo2t4gd",
+    merchantId: "cmeejdwz20000i008n47qkimu",
 
     variants: [
       {
@@ -103,10 +105,11 @@ const sampleProducts: Product[] = [
     brand: "New Balance",
     category: "Herren Freizeit Jacke",
     subcategory: "Herren",
+    categoryId: "cm8msrowk0000i0dkfdo2t4bc",
     rating: 4.5,
     numReviews: 10,
     slug: "nb-classic-core-full-zip",
-    merchantId: "cm8msrowk0000i0dkfdo2t4gd",
+    merchantId: "cmeejdwz20000i008n47qkimu",
 
     variants: [
       {
@@ -160,10 +163,11 @@ const sampleProducts: Product[] = [
     brand: "New Balance",
     category: "Damen Freizeit",
     subcategory: "Damen",
+    categoryId: "cm8msrowk0000i0dkfdo2t4df",
     rating: 5.5,
     numReviews: 4,
     slug: "w-200-slides-seasonalfreizeitsandalen",
-    merchantId: "cm8msrowk0000i0dkfdo2t4gd",
+    merchantId: "cmeejdwz20000i008n47qkimu",
 
     variants: [
       {
@@ -204,26 +208,6 @@ const sampleProducts: Product[] = [
           },
         ],
       },
-      /*  {
-        size: "48",
-        international: "M",
-        options: [
-          {
-            color: "athletic grey",
-            entryPrice: 788.88,
-            sellPrice: 1299.99,
-            quantity: 3,
-            sku: "NB Classic Core Full Zip Jacket athletic grey EU-48 US-M",
-            url: "https://newbalance.ch/cdn/shop/files/",
-            image: [
-              "/2fe5a3e5-5723-4d96-8b85-17fea0f10aae.png?v=1739240592&width=600",
-              "/c66f5ad9-fc99-41c1-9e51-65db4ec8c739.png?v=1739240590&width=600",
-            ],
-            weight: 9.5,
-            stockLevel: 1,
-          },
-        ],
-      }, */
     ],
   },
   {
@@ -235,10 +219,11 @@ const sampleProducts: Product[] = [
     brand: "New Balance",
     category: "Hoodies Jungen",
     subcategory: "Kinder Jungen",
+    categoryId: "cm8msrowk0000i0dkfdo2t4ef",
     rating: 5.5,
     numReviews: 230,
     slug: "b-new-balance-french-terry-small-logo-hoodie",
-    merchantId: "cm8msrowk0000i0dkfdo2t4gd",
+    merchantId: "cmeejdwz20000i008n47qkimu",
 
     variants: [
       {

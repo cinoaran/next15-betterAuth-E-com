@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 
 import {UpdateProfile} from "@/actions/admin/profile/update-profile";
+import {useRouter} from "next/navigation";
 
 interface UpdateProfileProps {
   user: {
@@ -42,6 +43,7 @@ interface UpdateProfileProps {
 }
 
 const UpdateProfileForm = ({user}: UpdateProfileProps) => {
+  const router = useRouter();
   if (!user) {
     return null;
   }
@@ -67,20 +69,23 @@ const UpdateProfileForm = ({user}: UpdateProfileProps) => {
     setIsPending(true);
     try {
       const user = await UpdateProfile(data);
-      setSuccess(user?.success);
 
       if (user.error) {
         setSuccess("");
         setError(user?.error);
       }
+
+      setSuccess("Login successful, redirecting...");
+      setTimeout(() => {
+        setSuccess(""); // Hide the message after 3 seconds
+        router.push("/admin");
+        router.refresh();
+      }, 3000);
     } catch (error) {
       setError("Something went wrong!");
       console.log(error);
-    } finally {
-      setError("");
-      setSuccess("");
-      setIsPending(false);
     }
+    setIsPending(false);
   };
 
   return (
